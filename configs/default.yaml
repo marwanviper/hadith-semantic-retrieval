@@ -1,0 +1,58 @@
+# =============================================================================
+# Hadith Semantic Search — Default Configuration
+# =============================================================================
+# All parameters can be overridden via CLI flags or environment variables.
+# See src/config/config.py for full documentation of each field.
+
+embedding:
+  # Sentence-Transformers model name (must support Arabic / multilingual)
+  # 'paraphrase-multilingual-MiniLM-L12-v2' is ~120 MB and supports 50+ languages
+  # including Arabic.  Good balance of quality vs size for eventual mobile export.
+  model: "paraphrase-multilingual-MiniLM-L12-v2"
+  batch_size: 32           # Batch size for bulk encoding (higher = faster if RAM allows)
+  normalize_embeddings: true  # L2-normalize so cosine sim = dot product
+
+search:
+  algorithm: "hnsw"        # Default algorithm: brute_force | ivf | hnsw | pq | ivf_pq
+  top_k: 10                # Number of results to return
+  metric: "cosine"         # Distance metric: cosine | dot | l2
+
+hnsw:
+  M: 16                    # Max edges per node in the graph (higher = better recall, more RAM)
+  ef_construction: 200     # Beam width during index construction (higher = better quality)
+  ef_search: 64            # Beam width during query (higher = better recall, slower)
+  # Rule of thumb: ef_search >= top_k.  Start with ef_search=64 and tune for your latency budget.
+
+ivf:
+  n_clusters: 256          # Number of Voronoi cells (K in K-Means). Typically sqrt(N).
+  nprobe: 8                # Clusters searched per query. Higher = better recall, slower.
+  # Example: n_clusters=256 nprobe=8 searches ~3% of index per query.
+
+pq:
+  subquantizers: 8         # Number of subspaces (M). Must divide embedding dimension evenly.
+  bits_per_code: 8         # Bits per code → 2^bits centroids per subspace (8 = 256 centroids)
+  # Index size = N * M * bits/8 bytes  (vs  N * D * 4 bytes for float32)
+
+ivf_pq:
+  n_clusters: 64           # IVF coarse quantizer clusters
+  nprobe: 4                # IVF clusters searched per query
+  subquantizers: 8         # PQ subspaces
+  bits_per_code: 8         # PQ bits per subspace
+
+paths:
+  raw_data: "data/raw"
+  processed_data: "data/processed"
+  indexes: "data/indexes"
+  benchmark_results: "data/benchmark_results"
+  models: "models"
+
+benchmark:
+  n_queries: 20            # Number of queries to use for benchmarking
+  top_k: 10                # K for Recall@K computation
+  random_seed: 42          # Seed for reproducibility
+  warmup_queries: 3        # Queries to discard for JIT/cache warm-up
+
+logging:
+  level: "INFO"            # DEBUG | INFO | WARNING | ERROR
+  format: "{asctime} | {levelname:<8} | {name} | {message}"
+  datefmt: "%Y-%m-%d %H:%M:%S"

@@ -1,0 +1,133 @@
+{
+  "timestamp": "20260901_115953",
+  "config": {
+    "embedding_model": "paraphrase-multilingual-MiniLM-L12-v2",
+    "k": 10,
+    "n_queries": 20,
+    "random_seed": 42
+  },
+  "results": {
+    "brute_force": {
+      "algorithm": "brute_force",
+      "n_queries": 20,
+      "k": 10,
+      "build_time_s": 0.0,
+      "index_size_mb": 0.74,
+      "index_params": {
+        "metric": "cosine"
+      },
+      "latency": {
+        "avg_ms": 0.037,
+        "p50_ms": 0.031,
+        "p95_ms": 0.055,
+        "p99_ms": 0.055,
+        "min_ms": 0.029,
+        "max_ms": 0.058
+      },
+      "quality": {
+        "avg_recall_at_k": 1.0,
+        "avg_precision_at_k": 1.0
+      }
+    },
+    "ivf": {
+      "algorithm": "ivf",
+      "n_queries": 20,
+      "k": 10,
+      "build_time_s": 0.63,
+      "index_size_mb": 1.11,
+      "index_params": {
+        "n_clusters": 256,
+        "nprobe": 8,
+        "metric": "cosine"
+      },
+      "latency": {
+        "avg_ms": 0.043,
+        "p50_ms": 0.04,
+        "p95_ms": 0.059,
+        "p99_ms": 0.059,
+        "min_ms": 0.03,
+        "max_ms": 0.059
+      },
+      "quality": {
+        "avg_recall_at_k": 0.865,
+        "avg_precision_at_k": 0.92
+      }
+    },
+    "hnsw": {
+      "algorithm": "hnsw",
+      "n_queries": 20,
+      "k": 10,
+      "build_time_s": 0.015,
+      "index_size_mb": 0.81,
+      "index_params": {
+        "M": 16,
+        "ef_construction": 200,
+        "ef_search": 64,
+        "metric": "cosine"
+      },
+      "latency": {
+        "avg_ms": 0.052,
+        "p50_ms": 0.051,
+        "p95_ms": 0.059,
+        "p99_ms": 0.059,
+        "min_ms": 0.048,
+        "max_ms": 0.069
+      },
+      "quality": {
+        "avg_recall_at_k": 0.925,
+        "avg_precision_at_k": 0.925
+      }
+    },
+    "pq": {
+      "algorithm": "pq",
+      "n_queries": 20,
+      "k": 10,
+      "build_time_s": 1.284,
+      "index_size_mb": 0.38,
+      "index_params": {
+        "subquantizers": 8,
+        "bits_per_code": 8,
+        "n_centroids": 256,
+        "metric": "cosine"
+      },
+      "latency": {
+        "avg_ms": 0.086,
+        "p50_ms": 0.076,
+        "p95_ms": 0.133,
+        "p99_ms": 0.133,
+        "min_ms": 0.072,
+        "max_ms": 0.137
+      },
+      "quality": {
+        "avg_recall_at_k": 0.935,
+        "avg_precision_at_k": 0.935
+      }
+    },
+    "ivf_pq": {
+      "algorithm": "ivf_pq",
+      "n_queries": 20,
+      "k": 10,
+      "build_time_s": 1.422,
+      "index_size_mb": 0.48,
+      "index_params": {
+        "n_clusters": 64,
+        "nprobe": 4,
+        "subquantizers": 8,
+        "bits_per_code": 8,
+        "metric": "cosine"
+      },
+      "latency": {
+        "avg_ms": 0.078,
+        "p50_ms": 0.078,
+        "p95_ms": 0.087,
+        "p99_ms": 0.087,
+        "min_ms": 0.071,
+        "max_ms": 0.092
+      },
+      "quality": {
+        "avg_recall_at_k": 0.9,
+        "avg_precision_at_k": 0.9
+      }
+    }
+  }
+}
